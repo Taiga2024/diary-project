@@ -24,6 +24,8 @@ type User {
     "Unique primary key."
     id: ID!
 
+    profile_image:string
+    
     "Non-unique name."
     name: String!
 
