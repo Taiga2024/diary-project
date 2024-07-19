@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('followers', function (Blueprint $table) {
             $table->foreignId('following_id')->constrained('users')->cascadeOnDelete()->comment('フォローしているユーザーID');
             $table->foreignId('followed_id')->constrained('users')->cascadeOnDelete()->comment('フォローされているユーザーID');
+            $table->timestamps();
             
             $table->primary(['following_id', 'followed_id']);
             $table->unique(['following_id', 'followed_id']);
