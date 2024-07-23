@@ -21,6 +21,15 @@ type Query {
     allUsers: [User!]! @all
 }
 
+type Mutation {
+  createUser(
+    name: String!
+    email: String!
+    password: String!
+  ): User! @create
+}
+
+
 "Account of a person who utilizes this application."
 type User {
     "Unique primary key."
