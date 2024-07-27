@@ -18,11 +18,9 @@ extend type Query {
 }
 
 extend type Mutation {
-  createUser(
-    name: String!
-    email: String!
-    password: String!
-  ): User! @create
+  register(input:RegisterInput! @spread):AuthPayload @field(resolver:"App\\GraphQL\\Mutations\\AuthResolver@register")
+  login(input:LoginInput! @spread):AuthPayload @field(resolver:"App\\GraphQL\\Mutations\\AuthResolver@login")
+  logout:Logout! @field(resolver:"App\\GraphQL\\Mutations\\AuthResolver@logout")
 }
 
 "Account of a person who utilizes this application."
@@ -46,4 +44,24 @@ type User {
 
     "When the account was last updated."
     updated_at: DateTime!
+}
+
+type AuthPayload {
+  user:User
+  token:String
+}
+
+type Logout{
+  success:Boolean!
+  user:User
+}
+input RegisterInput {
+  name: String! @rules(apply: ["required", "max:255"])
+  email: String! @rules(apply: ["required", "email","unique:users,email"])
+  password: String! @rules(apply: ["required", "min:8"])
+}
+
+input LoginInput {
+  email: String! @rules(apply: ["required"])
+  password: String! @rules(apply: ["required", "min:8"])
 }
