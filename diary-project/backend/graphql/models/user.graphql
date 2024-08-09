@@ -52,7 +52,7 @@ type AuthPayload {
 }
 
 type Logout{
-  success:Boolean!
+  status:Boolean!
   user:User
 }
 input RegisterInput {

@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "graphql-request": "^7.1.0",
-    "nuxt": "^3.12.3",
+    "nuxt": "^3.12.4",
+    "ress": "^5.0.2",
     "vue": "latest"
   }
 }

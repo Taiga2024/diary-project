@@ -4,7 +4,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-        apiUrl: '',
+      apiUrl: '',
     }
   },
+  vite: {
+    server: {
+      watch: {
+        usePolling: true,
+      },
+    },
+  },
+  css: ['ress'],
 })
