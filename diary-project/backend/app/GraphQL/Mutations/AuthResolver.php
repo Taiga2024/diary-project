@@ -61,7 +61,7 @@ final readonly class AuthResolver
         $authUser->tokens()->where('tokenable_id', $authUser->id)->delete();
 
         return [
-            "success" => true,
+            "status" => true,
             "user" =>$authUser,
         ];
     }

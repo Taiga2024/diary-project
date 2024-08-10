@@ -4,40 +4,39 @@ import type { Ref } from 'vue'
 import { gql } from "graphql-request";
 import gqlRequest from "../utils/gqlRequest";
 
+
+const email: Ref<string> = ref("");
+const password: Ref<number | undefined> = ref();
+const confirmPassword: Ref<number | undefined> = ref();
+const isLoading: Ref<boolean> = ref(false);
+
 definePageMeta({
   layout: false
 })
 
-const name:Ref<string> = ref("");
-const email:Ref<string> = ref("");
-const password:Ref<number|undefined> = ref();
-const confirmPassword:Ref<number|undefined>= ref();
-const isLoading:Ref<boolean> = ref(false);
-
 interface variables {
   input: {
-    name: string;
     email: string;
     password: number | undefined;
   }
 }
 
 interface fetchData {
-  register:{
-    token:string,
-    user:{
-      id:number,
-      name:string,
-      email:string,
+  login: {
+    token: string,
+    user: {
+      id: number,
+      name: string,
+      email: string,
     }
   }
 }
 
 async function sendUserData() {
   isLoading.value = true
-  const registerQuery: string = gql`
-    mutation ($input: RegisterInput!) {
-      register(input: $input) {
+  const LoginQuery: string = gql`
+    mutation ($input: LoginInput!) {
+      login(input: $input) {
         user {
           id
           name
@@ -48,31 +47,30 @@ async function sendUserData() {
     }
   `;
 
-  const RegisterInput: variables = {
+  const LoginInput: variables = {
     "input": {
-      "name": name.value,
       "email": email.value,
       "password": password.value
     }
   }
 
-  const fetchData:fetchData = await gqlRequest<fetchData,variables>({
-    query: registerQuery,
-    variables: RegisterInput,
+  const fetchData: fetchData = await gqlRequest<fetchData, variables>({
+    query: LoginQuery,
+    variables: LoginInput,
   });
-  
-  const cookie = useCookie<string>("token",{
-        maxAge: 60 * 60 * 24,
-      })
-  cookie.value=fetchData.register.token
+
+  const cookie = useCookie<string>("token", {
+    maxAge: 60 * 60 * 24,
+  })
+  cookie.value = fetchData.login.token
 
   navigateTo('/')
 }
 </script>
 
 <template>
-   <!-- ローディング -->
-   <div class="flex" v-if="isLoading">
+  <!-- ローディング -->
+  <div class="flex" v-if="isLoading">
     <div class="dot-spinner">
       <div class="dot-spinner__dot"></div>
       <div class="dot-spinner__dot"></div>
@@ -88,12 +86,8 @@ async function sendUserData() {
   <!-- フォーム -->
   <div class="flex" v-if="!isLoading">
     <form class="form" @submit.prevent="sendUserData">
-      <p class="title">Register</p>
-      <p class="message">Signup now and get full access to our app.</p>
-      <label>
-        <input required type="text" class="input" v-model="name" />
-        <span>Name</span>
-      </label>
+      <p class="title">Login</p>
+      <p class="message">Sign in to continue</p>
 
       <label>
         <input required type="email" class="input" v-model="email" />
@@ -109,7 +103,8 @@ async function sendUserData() {
         <span>Confirm password</span>
       </label>
       <button class="submit">Submit</button>
-      <p class="signin">Already have an acount ? <NuxtLink to="/login" class="signinLink"> Signin </NuxtLink></p>
+      <p class="signin">Don't have an account? <NuxtLink to="/register" class="signinLink"> Sign up </NuxtLink>
+      </p>
     </form>
   </div>
 </template>
