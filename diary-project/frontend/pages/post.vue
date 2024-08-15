@@ -18,33 +18,42 @@ interface variables {
 }
 
 interface fetchData {
-  login: {
-    token: string,
-    user: {
-      id: number,
-      name: string,
-      email: string,
+  data: {
+    post:{
+      id:number;
+      title:string;
+      text:string;
+      user:{
+        id:number;
+        name:string;
+      }
     }
   }
 }
 
-async function sendUserData() {
+async function sendDiaryData() {
   isLoading.value = true
+  const cookie = useCookie<string | null>("token")
+
+  const header = {
+    "Authorization": `Bearer ${cookie.value}`
+  }
   
-  const LoginQuery: string = gql`
-    mutation ($input: LoginInput!) {
-      login(input: $input) {
+  const PostQuery: string = gql`
+    mutation ($input: DiaryInput!) {
+      post(input: $input) {
         user {
           id
           name
-          email
         }
-        token
+        id
+        title
+        text
       }
     }
   `;
 
-  const LoginInput: variables = {
+  const DiaryInput: variables = {
     "input": {
       "title": title.value,
       "text": text.value
@@ -52,14 +61,10 @@ async function sendUserData() {
   }
 
   const fetchData: fetchData = await gqlRequest<fetchData, variables>({
-    query: LoginQuery,
-    variables: LoginInput,
+    query: PostQuery,
+    variables: DiaryInput,
+    headers: header
   });
-
-  const cookie = useCookie<string>("token", {
-    maxAge: 60 * 60 * 24,
-  })
-  cookie.value = fetchData.login.token
 
   navigateTo('/')
 }
@@ -71,9 +76,9 @@ async function sendUserData() {
   <div class="flex" v-if="!isLoading">
     <div class="container">
       <div class="heading">Diary</div>
-      <form action="" class="form">
-        <input required class="input" type="text" placeholder="title">
-        <textarea required class="textarea" placeholder="text"></textarea>
+      <form class="form" @submit.prevent="sendDiaryData">
+        <input required class="input" type="text" placeholder="title" v-model="title">
+        <textarea required class="textarea" placeholder="text" v-model="text"></textarea>
         <input class="submit-button" type="submit" value="Post">
       </form>
     </div>
