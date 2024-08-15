@@ -28,7 +28,9 @@ type User {
     "Unique primary key."
     id: ID!
 
-    profile_image: string
+    profile_image: String
+
+    diaries: [Diary!]! @hasMany
 
     "Non-unique name."
     name: String!
@@ -65,3 +67,4 @@ input LoginInput {
   email: String! @rules(apply: ["required"])
   password: String! @rules(apply: ["required", "min:8"])
 }
+

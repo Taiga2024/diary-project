@@ -6,4 +6,4 @@ type Query
 
 type Mutation
 
-#import **/*.graphql
+#import models/*.graphql

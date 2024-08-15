@@ -8,11 +8,11 @@ definePageMeta({
   layout: false
 })
 
-const name:Ref<string> = ref("");
-const email:Ref<string> = ref("");
-const password:Ref<number|undefined> = ref();
-const confirmPassword:Ref<number|undefined>= ref();
-const isLoading:Ref<boolean> = ref(false);
+const name: Ref<string> = ref("");
+const email: Ref<string> = ref("");
+const password: Ref<number | undefined> = ref();
+const confirmPassword: Ref<number | undefined> = ref();
+const isLoading: Ref<boolean> = ref(false);
 
 interface variables {
   input: {
@@ -23,12 +23,12 @@ interface variables {
 }
 
 interface fetchData {
-  register:{
-    token:string,
-    user:{
-      id:number,
-      name:string,
-      email:string,
+  register: {
+    token: string,
+    user: {
+      id: number,
+      name: string,
+      email: string,
     }
   }
 }
@@ -56,34 +56,23 @@ async function sendUserData() {
     }
   }
 
-  const fetchData:fetchData = await gqlRequest<fetchData,variables>({
+  const fetchData: fetchData = await gqlRequest<fetchData, variables>({
     query: registerQuery,
     variables: RegisterInput,
   });
-  
-  const cookie = useCookie<string>("token",{
-        maxAge: 60 * 60 * 24,
-      })
-  cookie.value=fetchData.register.token
+
+  const cookie = useCookie<string>("token", {
+    maxAge: 60 * 60 * 24,
+  })
+  cookie.value = fetchData.register.token
 
   navigateTo('/')
 }
 </script>
 
 <template>
-   <!-- ローディング -->
-   <div class="flex" v-if="isLoading">
-    <div class="dot-spinner">
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-      <div class="dot-spinner__dot"></div>
-    </div>
-  </div>
+  <!-- ローディング -->
+  <Loading v-if="isLoading" />
 
   <!-- フォーム -->
   <div class="flex" v-if="!isLoading">
@@ -109,7 +98,8 @@ async function sendUserData() {
         <span>Confirm password</span>
       </label>
       <button class="submit">Submit</button>
-      <p class="signin">Already have an acount ? <NuxtLink to="/login" class="signinLink"> Signin </NuxtLink></p>
+      <p class="signin">Already have an acount ? <NuxtLink to="/login" class="signinLink"> Signin </NuxtLink>
+      </p>
     </form>
   </div>
 </template>
@@ -251,114 +241,6 @@ async function sendUserData() {
   to {
     transform: scale(1.8);
     opacity: 0;
-  }
-}
-
-/* ローディング */
-
-/* From Uiverse.io by abrahamcalsin */
-.dot-spinner {
-  --uib-size: 5rem;
-  --uib-speed: .9s;
-  --uib-color: #183153;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: var(--uib-size);
-  width: var(--uib-size);
-}
-
-.dot-spinner__dot {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-  width: 100%;
-}
-
-.dot-spinner__dot::before {
-  content: '';
-  height: 20%;
-  width: 20%;
-  border-radius: 50%;
-  background-color: var(--uib-color);
-  transform: scale(0);
-  opacity: 0.5;
-  animation: pulse0112 calc(var(--uib-speed) * 1.111) ease-in-out infinite;
-  box-shadow: 0 0 20px rgba(18, 31, 53, 0.3);
-}
-
-.dot-spinner__dot:nth-child(2) {
-  transform: rotate(45deg);
-}
-
-.dot-spinner__dot:nth-child(2)::before {
-  animation-delay: calc(var(--uib-speed) * -0.875);
-}
-
-.dot-spinner__dot:nth-child(3) {
-  transform: rotate(90deg);
-}
-
-.dot-spinner__dot:nth-child(3)::before {
-  animation-delay: calc(var(--uib-speed) * -0.75);
-}
-
-.dot-spinner__dot:nth-child(4) {
-  transform: rotate(135deg);
-}
-
-.dot-spinner__dot:nth-child(4)::before {
-  animation-delay: calc(var(--uib-speed) * -0.625);
-}
-
-.dot-spinner__dot:nth-child(5) {
-  transform: rotate(180deg);
-}
-
-.dot-spinner__dot:nth-child(5)::before {
-  animation-delay: calc(var(--uib-speed) * -0.5);
-}
-
-.dot-spinner__dot:nth-child(6) {
-  transform: rotate(225deg);
-}
-
-.dot-spinner__dot:nth-child(6)::before {
-  animation-delay: calc(var(--uib-speed) * -0.375);
-}
-
-.dot-spinner__dot:nth-child(7) {
-  transform: rotate(270deg);
-}
-
-.dot-spinner__dot:nth-child(7)::before {
-  animation-delay: calc(var(--uib-speed) * -0.25);
-}
-
-.dot-spinner__dot:nth-child(8) {
-  transform: rotate(315deg);
-}
-
-.dot-spinner__dot:nth-child(8)::before {
-  animation-delay: calc(var(--uib-speed) * -0.125);
-}
-
-@keyframes pulse0112 {
-
-  0%,
-  100% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-
-  50% {
-    transform: scale(1);
-    opacity: 1;
   }
 }
 </style>
