@@ -1,4 +1,14 @@
+extend type Query {
+    "Find a single user by an identifying attribute."
+    diary(
+      "Search by primary key."
+      id: ID @eq
 
+    ): Diary @find
+
+    "List multiple users."
+    diaries: [Diary!]! @paginate(defaultCount: 10)
+}
 
 extend type Mutation {
   post(input:DiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\PostDiaryResolver")

@@ -4,6 +4,9 @@ import type { Ref } from 'vue'
 import { gql } from "graphql-request";
 import gqlRequest from "../utils/gqlRequest";
 
+definePageMeta({
+  middleware: ["auth"]
+})
 
 const title: Ref<string> = ref("");
 const text: Ref<string> = ref("");
@@ -18,7 +21,6 @@ interface variables {
 }
 
 interface fetchData {
-  data: {
     post:{
       id:number;
       title:string;
@@ -28,7 +30,6 @@ interface fetchData {
         name:string;
       }
     }
-  }
 }
 
 async function sendDiaryData() {
@@ -60,7 +61,7 @@ async function sendDiaryData() {
     }
   }
 
-  const fetchData: fetchData = await gqlRequest<fetchData, variables>({
+  const {post}: fetchData = await gqlRequest<fetchData, variables>({
     query: PostQuery,
     variables: DiaryInput,
     headers: header

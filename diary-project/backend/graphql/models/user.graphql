@@ -13,8 +13,6 @@ extend type Query {
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
-
-    allUsers: [User!]! @all
 }
 
 extend type Mutation {
