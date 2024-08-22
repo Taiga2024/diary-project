@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import type { Reactive, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { gql } from "graphql-request";
 import gqlRequest from "../utils/gqlRequest";
 
@@ -11,7 +11,7 @@ definePageMeta({
 const isLoading: Ref<boolean> = ref(false);
 const currentPage: Ref<number> = ref(1);
 const pageCount: Ref<number | undefined> = ref();
-const Diaries=ref()
+const Diaries = ref()
 
 interface variables {
   page: number
@@ -34,16 +34,16 @@ interface fetchData {
   }
 }
 
-watch(currentPage, async (newValue) => {
+watch(currentPage, async () => {
   const { diaries } = await loadDiaryData()
-  Diaries.value=diaries.data
+  Diaries.value = diaries.data
 })
 
 
 onMounted(async () => {
   const { diaries } = await loadDiaryData()
   pageCount.value = diaries.paginatorInfo.lastPage
-  Diaries.value=diaries.data
+  Diaries.value = diaries.data
 })
 
 async function loadDiaryData(): Promise<fetchData> {
@@ -86,11 +86,11 @@ async function loadDiaryData(): Promise<fetchData> {
 </script>
 
 <template>
-  <Loading v-if="isLoading"/>
+  <Loading v-if="isLoading" />
   <!-- 日記 -->
   <div class="card" v-for="Diary in Diaries" v-if="!isLoading">
-    <h3 class="card__title">{{ Diary.title }}
-    </h3>
+    <NuxtLink :to="`/diary/${Diary.id}`" class="card__title">{{ Diary.title }}
+    </NuxtLink>
     <div class="card__arrow">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="15" width="15">
         <path fill="#fff"
@@ -134,7 +134,7 @@ async function loadDiaryData(): Promise<fetchData> {
   margin-bottom: 10px;
 }
 
-.card > * + * {
+.card>*+* {
   margin-top: 1.1em;
 }
 
@@ -147,6 +147,7 @@ async function loadDiaryData(): Promise<fetchData> {
   padding: 0;
   font-size: 1.3rem;
   font-weight: bold;
+  text-decoration : none;
 }
 
 .card .card__date {
@@ -185,6 +186,7 @@ async function loadDiaryData(): Promise<fetchData> {
 .card:hover .card__arrow svg {
   transform: translateX(3px);
 }
+
 /* ぺジネーション */
 .radio-inputs {
   position: relative;
