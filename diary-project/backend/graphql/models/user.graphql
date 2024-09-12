@@ -13,6 +13,8 @@ extend type Query {
       "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
       name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
+
+     me: User! @auth(guards: ["sanctum"])
 }
 
 extend type Mutation {
@@ -28,7 +30,7 @@ type User {
 
     profile_image: String
 
-    diaries: [Diary!]! @hasMany
+    diaries: [Diary!]! @hasMany(defaultCount: 10,type: PAGINATOR)
 
     "Non-unique name."
     name: String!

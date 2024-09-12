@@ -54,6 +54,7 @@ async function Logout() {
     <header>
       <h1><NuxtLink to="/" class="title"> EnglishDiary </NuxtLink></h1>
       <nav>
+        <NuxtLink to="/myPost" class="postBtn"> myPost </NuxtLink>
         <NuxtLink to="/post" class="postBtn"> Post </NuxtLink>
         <button class="logout" @click.prevent="Logout">Logout</button>
       </nav>

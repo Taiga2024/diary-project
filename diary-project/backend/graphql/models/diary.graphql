@@ -11,8 +11,11 @@ extend type Query {
 }
 
 extend type Mutation {
-  post(input:DiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\PostDiaryResolver")
+  post(input:DiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\PostDiaryResolver@post")
+  deleteDiary(id: ID! @whereKey): Diary @delete
+  updateDiary(input:UpdateDiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\PostDiaryResolver@update")
 }
+
 
 type Diary {
     id: ID!
@@ -35,6 +38,12 @@ type Diary {
 }
 
 input DiaryInput{
+    title: String! @rules(apply: ["required", "max:255"])
+    text: String! @rules(apply: ["required"])
+}
+
+input UpdateDiaryInput{
+    id:ID!
     title: String! @rules(apply: ["required", "max:255"])
     text: String! @rules(apply: ["required"])
 }

@@ -16,7 +16,6 @@ export default async function gqlRequest<T=unknown,V = Record<string, unknown>>(
   const runtimeConfig = useRuntimeConfig();
   const apiUrl: string = runtimeConfig.public.apiUrl as string;
   const client = new GraphQLClient(apiUrl);
-
   if (headers) {
     client.setHeaders(headers);
   }
