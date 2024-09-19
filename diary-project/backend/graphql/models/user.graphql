@@ -32,6 +32,8 @@ type User {
 
     diaries: [Diary!]! @hasMany(defaultCount: 10,type: PAGINATOR)
 
+    favorites: [Favorite!]! @hasMany(type: PAGINATOR)
+
     "Non-unique name."
     name: String!
 

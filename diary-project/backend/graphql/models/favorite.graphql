@@ -1,0 +1,22 @@
+
+extend type Mutation{
+    createFavorite(diary_id:ID!):FavoriteStatus @field(resolver:"App\\GraphQL\\Mutations\\FavoriteResolver@store")
+    deleteFavorite(diary_id:ID!,favorite_id:ID!):FavoriteStatus @field(resolver:"App\\GraphQL\\Mutations\\FavoriteResolver@delete")
+}
+
+type Favorite{
+    id: ID!
+
+    user: User! @belongsTo
+
+    diary:Diary! @belongsTo
+
+    "When the account was created."
+    created_at: DateTime!
+
+    deleted_at: DateTime!
+}
+
+type FavoriteStatus{
+    status:Boolean!
+}

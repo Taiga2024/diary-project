@@ -22,6 +22,8 @@ type Diary {
 
     user: User! @belongsTo
 
+    favorites: [Favorite!]! @hasMany(type: PAGINATOR)
+
     thumbnail: String
 
     title:String
