@@ -2,7 +2,7 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Models\Diary;
+use App\Models\{Diary,Favorite};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -10,7 +10,7 @@ use Gemini\Laravel\Facades\Gemini;
 use Nuwabe\LightHouse\Execution\ResolveInfo;
 use Nuwabe\LightHouse\Support\Contracts\GraphQLContext;
 
-final readonly class PostDiaryResolver
+final readonly class DiaryResolver
 {
     /** @param  array{}  $args */
     public function post(null $_, array $args)
@@ -61,5 +61,19 @@ final readonly class PostDiaryResolver
         $result=Diary::where('id', $id)->first();
         
         return $result;
+    }
+
+    public function index(null $_, array $args){
+        $authUser=Auth::guard("sanctum")->user();
+        
+        ["page"=>$page]=$args;
+
+        $allDiary=Diary::paginate(10, ['*'], 'page', $page);
+
+        foreach ($allDiary as $Diary) {
+            $isFavorite=Favorite::where('user_id',$authUser->id)->where('diary_id',$Diary->id)->exists();
+            $Diary->isFavorite=$isFavorite;
+        }
+        return $allDiary;
     }
 }

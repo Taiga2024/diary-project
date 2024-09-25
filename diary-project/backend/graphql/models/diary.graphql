@@ -8,12 +8,14 @@ extend type Query {
 
     "List multiple users."
     diaries: [Diary!]! @paginate(defaultCount: 10)
+
+    allDiaries:[Diary!]! @paginate(resolver:"App\\GraphQL\\Mutations\\DiaryResolver@index",defaultCount: 10)
 }
 
 extend type Mutation {
-  post(input:DiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\PostDiaryResolver@post")
+  post(input:DiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\DiaryResolver@post")
   deleteDiary(id: ID! @whereKey): Diary @delete
-  updateDiary(input:UpdateDiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\PostDiaryResolver@update")
+  updateDiary(input:UpdateDiaryInput! @spread):Diary @field(resolver:"App\\GraphQL\\Mutations\\DiaryResolver@update")
 }
 
 
@@ -22,7 +24,11 @@ type Diary {
 
     user: User! @belongsTo
 
-    favorites: [Favorite!]! @hasMany(type: PAGINATOR)
+    favorites: [Favorite!]! @hasMany(relation: "favorites")
+
+    favoriteCount:Int @count(relation: "favorites")
+
+    isFavorite:Boolean
 
     thumbnail: String
 
