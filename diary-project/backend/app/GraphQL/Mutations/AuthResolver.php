@@ -36,9 +36,7 @@ final readonly class AuthResolver
         $user = User::where('email', $email)->first();
 
         if (! $user || ! Hash::check($password, $user->password)) {
-            throw new ValidationException([
-                "email" => ["このユーザーは存在しません"]
-            ]);
+            throw new \Exception("このユーザーは存在しません");
         }
 
         $token = $user->createToken($email)->plainTextToken;
