@@ -1,7 +1,7 @@
 
 extend type Mutation{
     createFavorite(diary_id:ID!):FavoriteStatus @field(resolver:"App\\GraphQL\\Mutations\\FavoriteResolver@store")
-    deleteFavorite(diary_id:ID!,favorite_id:ID!):FavoriteStatus @field(resolver:"App\\GraphQL\\Mutations\\FavoriteResolver@delete")
+    deleteFavorite(input:DeleteFavoriteInput! @spread):FavoriteStatus @field(resolver:"App\\GraphQL\\Mutations\\FavoriteResolver@delete")
 }
 
 type Favorite{
@@ -19,4 +19,8 @@ type Favorite{
 
 type FavoriteStatus{
     status:Boolean!
+}
+
+input DeleteFavoriteInput{
+    diary_id:ID!
 }

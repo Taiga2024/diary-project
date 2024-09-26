@@ -36,14 +36,14 @@ final readonly class FavoriteResolver
     }
 
     public function delete(null $_, array $args){
-        ["diary_id"=>$diary_id,"favorite_id"=>$favorite_id]=$args;
+        ["diary_id"=>$diary_id]=$args;
         $authUser=Auth::guard("sanctum")->user();
 
 
         $isFavorite=Favorite::where('user_id',$authUser->id)->where('diary_id',$diary_id)->exists();
 
-        if (!$isFavorite) {
-            Favorite::where("id", $favorite_id)->delete();
+        if ($isFavorite) {
+            Favorite::where('user_id',$authUser->id)->where('diary_id',$diary_id)->delete();
             return [
                 "status" => true,
             ];
