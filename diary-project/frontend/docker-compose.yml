@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build: ./
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - '3000:3000'
+    tty: true
+  nginx-frontend:
+    image: nginx
+    container_name: nginx-frontend
+    ports:
+      - 81:81
+    volumes:
+      - ./:/var/www:delegated
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    working_dir: /var/www
+    depends_on:
+      - frontend
