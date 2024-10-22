@@ -1,18 +1,11 @@
 services:
-  frontend:
-    build: ./frontend
-    volumes:
-      - ./frontend:/usr/src/app
-    ports:
-      - '3000:3000'
-    tty: true
   backend:
     build:
-      context: ./backend
+      context: ./
       dockerfile: Dockerfile
     tty: true
     volumes:
-        - ./backend/:/var/www/
+        - ./:/var/www/
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
@@ -21,19 +14,18 @@ services:
       - db
   nginx:
     image: nginx
-    container_name: nginx
+    container_name: nginx-backend
     ports:
       - 80:80
     volumes:
-      - ./backend:/var/www:delegated
+      - ./:/var/www:delegated
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     working_dir: /var/www
     depends_on:
-      - frontend
       - backend
   db:
     image: mysql:8.0.36
-    container_name: db
+    container_name: db-backend
     environment: 
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: database 
@@ -45,7 +37,7 @@ services:
     ports:
       - 3306:3306
   phpmyadmin:
-    container_name: test_phpmyadmin
+    container_name: test_phpmyadmin-backend
     image: phpmyadmin
     environment:
     - PMA_USER=root
