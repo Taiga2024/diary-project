@@ -1,6 +1,6 @@
 From node:latest
 
-WORKDIR usr/src/app
+WORKDIR /usr/src/app
 
 COPY package*.json ./
 
@@ -8,4 +8,6 @@ RUN npm install
 
 COPY . .
 
-CMD ["npm","run","dev"]
+CMD ["node", ".output/server/index.mjs"]
+
+EXPOSE 3000
