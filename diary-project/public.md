@@ -45,7 +45,7 @@ https://rnakamine.hatenablog.com/entry/2020/09/17/232707
 ## フロントエンド
 
 ### Vue.js
-- vueはv-ifなどのディレクティブをHTMLタグのなかで使うことで様々な表示ができる。
+- vueはv-ifなどのディレクティブをHTMLベースのテンプレート構文のなかで使うことで様々な表示ができる。
 - リアクティブな値を作成する場合はrefを使う。
 - データの受け渡しはpropsを使う
 - vueのデータの流れは一方向。これはデータの流れを管理しやすくするため。
@@ -61,7 +61,7 @@ https://rnakamine.hatenablog.com/entry/2020/09/17/232707
 1. envファイルにNUXT_という接頭辞をつけた環境変数を作る
 
 ``` typescript
-NUXT_PUBLIC_API_URL=http://shimizu-test-lb-641323297.ap-northeast-1.elb.amazonaws.com/graphql/graphql
+NUXT_PUBLIC_API_URL=http://
 ```
 
 2. nuxt.config.tsに以下のように記述する
